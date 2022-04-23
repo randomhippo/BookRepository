@@ -12,7 +12,7 @@ TODO: Write instructions
 Below follows a basic overview of included projects.
 
 The project contains the following 
-- *Bookrepository:* The application itself. 
+- *Bookrepository.App:* The application itself. 
    -  Since the domain model contains few entity types, a single file is the options that will lead to the least clutter.
    -  It is meant to be able to run directly after build. This means that schema migration/adding basic data will be done as part of progeram startup as needed.
      - The data check will only check if the entities in the sample file is present during startup by comparing id:s. 
