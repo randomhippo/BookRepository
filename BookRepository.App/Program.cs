@@ -23,3 +23,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+
+// Needed to have class accessible for test, since internal by default
+public partial class Program { }
