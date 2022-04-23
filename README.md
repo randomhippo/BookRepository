@@ -8,7 +8,7 @@ This project is used as a demo of my prgramming skills, and also being able to r
 ## Usage
 TODO: Write instructions
 
-##Structure
+## Structure
 Below follows a basic overview of included projects.
 
 The project contains the following 
@@ -21,12 +21,12 @@ The project contains the following
 - *Bookrepository.Tests*: Automated tests that should be always be run. These are meant to test the code in isolation, that is without starting the main application.  
 - *Bookrepository.Tests.Acceptance*: These are the use cases from the problem description, plus any other tests that need to be run on the final application.
 
-##Task list
+## Task list
 Mainly used to kepp track of work progress without using an external program.
 
  - [X] Set up code repository and readme
- - [ ] Create main app
- - [ ] Set up self hosted server. Should contains a single endpoint to see that the server can process requests.
+ - [X] Create main app
+ - [X] Set up self hosted server. Should contains a single endpoint to see that the server can process requests.
  - [ ] Decide fine architecture details
  - [ ] Set up test projects
  - [ ] Implement domain model, and any related tests
