@@ -43,7 +43,7 @@ Mainly used to kepp track of work progress without using an external program.
  - [X] Set up self hosted server. Should contains a single endpoint to see that the server can process requests.
  - [X] Decide fine architecture details
  - [X] Set up test projects
- - [ ] Implement domain model, DTO as POCO, and any related tests
+ - [X] Implement domain model, ~~DTO as POCO~~(not needed, used built in attributes instead), and any related tests
  - [ ] Add api endpoints according to spec, and create failing acceptance tests for them
  - [ ] Add services, and connect them to API endpoints. Inject dummy interface implementations at this point
  - [ ] Test request validation, make sure that validation pipeline is working correctly.

@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Xunit;
 
 namespace BookRepository.Tests.EndToEnd
@@ -12,7 +13,7 @@ namespace BookRepository.Tests.EndToEnd
         }
 
         [Fact]
-        public async void TestFixtureWorks()
+        public async Task TestFixtureWorks()
         {
             var result = await _fixture.Client.GetAsync("/WeatherForecast");
 
