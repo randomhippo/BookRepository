@@ -11,12 +11,8 @@ namespace BookRepository.Tests.EndToEnd
         public WebServerFixture()
         {
             _application = new WebApplicationFactory<Program>()
-                                .WithWebHostBuilder(builder =>
-                                {
+                                .WithWebHostBuilder(builder => { });
 
-                                });
-
-            
             Client = _application.CreateClient();
 
         }
@@ -27,11 +23,6 @@ namespace BookRepository.Tests.EndToEnd
         {
             _application.Dispose();
             Client.Dispose();
-        }
-
-        private HttpClient GetClient()
-        {
-            return HttpClientFactory.Create();
         }
     }
 }
