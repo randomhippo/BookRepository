@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace BookRepository.App.Domain
+namespace BookRepository.App.Converters
 {
 	public class CustomDateTimeConverter : JsonConverter<DateTime>
 	{

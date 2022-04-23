@@ -1,11 +1,9 @@
-﻿using BookRepository.App.Domain;
-using System;
-using System.Threading.Tasks;
+﻿using System;
 using System.Text.Json;
+using BookRepository.App.Converters;
+using BookRepository.App.Domain;
 using FluentAssertions;
 using Xunit;
-using System.Text.Json.Serialization;
-
 namespace BookRepository.Tests
 {
     public class BookSerializationTests
