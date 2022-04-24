@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace BookRepository.App.Domain
 {
@@ -6,31 +7,38 @@ namespace BookRepository.App.Domain
     {
         [JsonPropertyName("id")]
         [JsonPropertyOrder(0)]
+        [Key]
         public string Id { get; set; }
 
         [JsonPropertyName("author")]
         [JsonPropertyOrder(1)]
+        [Required]
         public string Author { get; set; }
 
         [JsonPropertyName("title")]
         [JsonPropertyOrder(2)]
+        [Required]
         public string Title { get; set; }
         
         [JsonPropertyName("genre")]
         [JsonPropertyOrder(3)]
+        [Required]
         public string Genre { get; set; }
 
         [JsonPropertyName("price")]
         [JsonPropertyOrder(4)]
         [JsonNumberHandling(JsonNumberHandling.WriteAsString | JsonNumberHandling.AllowReadingFromString)]
+        [Required]
         public decimal Price { get; set; }
 
         [JsonPropertyName("publish_date")]
         [JsonPropertyOrder(5)]
+        [Required]
         public DateTime Published { get; set; }
         
         [JsonPropertyName("description")]
         [JsonPropertyOrder(6)]
+        [Required]
         public string Description { get; set; }
 
         public override bool Equals(object? obj)

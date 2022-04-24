@@ -1,4 +1,5 @@
 ﻿using BookRepository.App.Domain;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookRepository.App.Controllers
@@ -7,6 +8,13 @@ namespace BookRepository.App.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
+        private readonly IMediator _mediator;
+
+        public BooksController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
         public readonly Book book1 = new Book
         {
             Id = "B1",
