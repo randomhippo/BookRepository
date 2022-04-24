@@ -17,9 +17,11 @@ namespace BookRepository.App.DataAccess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.UseCollation("NOCASE");
             modelBuilder.Entity<Book>(
                 builder =>
                 {
+                   
                     //Specify type as double since SqlLite does not support decimal
                     //See https://docs.microsoft.com/en-us/ef/core/providers/sqlite/limitations#query-limitations
                     builder.Property(b => b.Price).HasConversion<double>();

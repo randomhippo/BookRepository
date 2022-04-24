@@ -58,21 +58,14 @@ namespace BookRepository.App.Controllers
         [HttpGet("{property}/{value}")]
         public async Task<IActionResult> GetFiltered([FromRoute] string property, [FromRoute] string value)
         {
-            var books = new List<Book>() { book1, book2 };
-
-
-            switch (property.ToLower())
+            var request = new GetBooksFiltered.Request
             {
-                case "id":
-                    return Ok(books.Where(b => b.Id.Contains(value, StringComparison.OrdinalIgnoreCase)).OrderBy(b => b.Id));
-                case "author":
-                    return Ok(books.Where(b => b.Author.Contains(value, StringComparison.OrdinalIgnoreCase)).OrderBy(b => b.Author));
-                case "genre":
-                    return Ok(books.Where(b => b.Genre.Contains(value, StringComparison.OrdinalIgnoreCase)).OrderBy(b => b.Genre));
-                default:
-                    return BadRequest("Invalid sort option or property not supported in POC code.");
+                FilterProperty = property,
+                FilterValue = value
+            };
+            var response = await _mediator.Send(request);
 
-            }
+            return Ok(response.Books);
         }
 
         [HttpGet("price/{Price:decimal}")]

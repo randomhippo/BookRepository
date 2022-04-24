@@ -27,7 +27,7 @@ namespace BookRepository.Tests.EndToEnd
         }
 
         [Fact]
-        public async Task GetBooks_SortedOnId()
+        public async Task GetBooks_SortedById()
         {
             var books = await _getBooksService.GetData("/api/books/id");
 
@@ -43,7 +43,7 @@ namespace BookRepository.Tests.EndToEnd
 
             books.Should()
                 .HaveCount(13)
-                .And.SatisfyRespectively(book => book.Id.Contains("b"))
+                .And.AllSatisfy(book => book.Id.Should().ContainEquivalentOf("b"))
                 .And.BeInAscendingOrder(b => b.Id);
         }
 
@@ -54,7 +54,7 @@ namespace BookRepository.Tests.EndToEnd
 
             books.Should()
                 .HaveCount(5)
-                .And.SatisfyRespectively(book => book.Id.Contains("b1"))
+                .And.AllSatisfy(book => book.Id.Contains("b1",StringComparison.InvariantCultureIgnoreCase))
                 .And.BeInAscendingOrder(b => b.Id);
         }
 
@@ -74,7 +74,7 @@ namespace BookRepository.Tests.EndToEnd
             var books = await _getBooksService.GetData("/api/books/author/joe");
 
             books.Should()
-                .ContainSingle(book => book.Author.Contains("joe"))
+                .ContainSingle(book => book.Author.Contains("joe", StringComparison.InvariantCultureIgnoreCase))
                 .And.BeInAscendingOrder(b => b.Author);
         }
 
@@ -84,7 +84,7 @@ namespace BookRepository.Tests.EndToEnd
             var books = await _getBooksService.GetData("/api/books/author/kut");
 
             books.Should()
-                .ContainSingle(book => book.Author.Contains("kut"))
+                .ContainSingle(book => book.Author.Contains("kut", StringComparison.InvariantCultureIgnoreCase))
                 .And.BeInAscendingOrder(b => b.Author);
         }
 
@@ -104,7 +104,7 @@ namespace BookRepository.Tests.EndToEnd
             var books = await _getBooksService.GetData("/api/books/title/deploy");
 
             books.Should()
-                .ContainSingle(book => book.Title.Contains("deploy"))
+                .ContainSingle(book => book.Title.Contains("deploy", StringComparison.InvariantCultureIgnoreCase))
                 .And.BeInAscendingOrder(b => b.Title);
         }
 
@@ -114,7 +114,7 @@ namespace BookRepository.Tests.EndToEnd
             var books = await _getBooksService.GetData("/api/books/title/jruby");
 
             books.Should()
-                .ContainSingle(book => book.Title.Contains("jruby"))
+                .ContainSingle(book => book.Title.Contains("jruby", StringComparison.InvariantCultureIgnoreCase))
                 .And.BeInAscendingOrder(b => b.Title);
         }
 
@@ -133,9 +133,7 @@ namespace BookRepository.Tests.EndToEnd
         {
             var books = await _getBooksService.GetData("/api/books/genre/deploy");
 
-            books.Should()
-                .ContainSingle(book => book.Genre.Contains("deploy"))
-                .And.BeInAscendingOrder(b => b.Genre);
+            books.Should().BeEmpty();
         }
 
         [Fact]
@@ -271,7 +269,7 @@ namespace BookRepository.Tests.EndToEnd
                 .HaveCount(2)
                 .And.AllSatisfy(book =>
                 {
-                    book.Description.Should().Contain("deploy");
+                    book.Description.Contains("deploy", StringComparison.InvariantCultureIgnoreCase);
                 })
                 .And.BeInAscendingOrder(b => b.Description);
         }
