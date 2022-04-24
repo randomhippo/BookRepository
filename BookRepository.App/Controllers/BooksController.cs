@@ -18,7 +18,7 @@ namespace BookRepository.App.Controllers
         [HttpGet()]
         public async Task<IActionResult> GetAll()
         {
-            var response = await _mediator.Send( new GetAllBooks.Request());
+            var response = await _mediator.Send(new GetAllBooks.Request());
             return Ok(response.Books);
         }
 
@@ -106,25 +106,25 @@ namespace BookRepository.App.Controllers
         }
 
         [HttpPost("{id}")]
-        public async Task<IActionResult> UpdateBook([FromRoute] string id,  [FromBody] BookData bookdata)
+        public async Task<IActionResult> UpdateBook([FromRoute] string id, [FromBody] UpdateBook.BookData bookdata)
         {
-            return BadRequest("When done, a book will be created if the request body is valid.");
+            var request = new UpdateBook.Request
+            {
+                Id = id,
+                UpdatedContent = bookdata
+            };
+
+            var response = await _mediator.Send(request);
+            return StatusCode((int)response.Result);
+            
         }
 
-        public class BookData
-        {
-             public string Author      { get; set;}
-             public string Description { get; set;}
-             public string Genre       { get; set;}
-             public string Price       { get; set;}
-             public string Published   { get; set;}
-             public string Title { get; set; }
-        }
+        
 
-        public class UpdateBookRequest
-        {
-            public string Id { get; set;}
-            public BookData BookData { get; set;}
-        }
+        //public class UpdateBookRequest
+        //{
+        //    public string Id { get; set; }
+        //    public BookData BookData { get; set; }
+        //}
     }
 }
