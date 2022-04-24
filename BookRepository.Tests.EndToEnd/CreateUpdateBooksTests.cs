@@ -1,28 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
-
-namespace BookRepository.Tests.EndToEnd
+﻿namespace BookRepository.Tests.EndToEnd
 {
-    public class CreateUpdateBooksTests : IClassFixture<ReadWriteFixture>
+    public class CreateUpdateBooksTests //: IClassFixture<ReadWriteFixture>
     {
-        private readonly ReadWriteFixture _fixture;
+        //private readonly ReadWriteFixture _fixture;
 
-        public CreateUpdateBooksTests(ReadWriteFixture fixture)
-        {
-            _fixture = fixture;
-        }
+        //public CreateUpdateBooksTests(ReadWriteFixture fixture)
+        //{
+        //    _fixture = fixture;
+        //}
 
-        [Fact]
-        public async Task CreateUpdateBooksAsync()
-        {
+        //[Fact]
+        //public async Task CreateUpdateBooksAsync()
+        //{
             
             
-        }
+        //}
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Web.Http;
-using BookRepository.App.DataAccess;
+﻿using BookRepository.App.DataAccess;
 using MediatR;
 
 namespace BookRepository.App.AppServices

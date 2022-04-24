@@ -5,7 +5,7 @@ using BookRepository.App.Domain;
 namespace BookRepository.App
 {
     /// <summary>
-    /// Class used to set up
+    /// Class used to set up initial data
     /// </summary>
     public class MigratorHostedService : IHostedService
     {

@@ -26,6 +26,8 @@ namespace BookRepository.App.DataAccess
                     //See https://docs.microsoft.com/en-us/ef/core/providers/sqlite/limitations#query-limitations
                     builder.Property(b => b.Price).HasConversion<double>();
                     builder.Property(b => b.Published).HasColumnType("datetime");
+                    
+                    //Add computed column for sorting on ID
                     builder.Property(b => b.PresentedId).HasComputedColumnSql("'B' || Id", stored:false);
                 });
         }
