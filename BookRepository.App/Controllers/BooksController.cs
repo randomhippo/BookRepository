@@ -1,4 +1,5 @@
-﻿using BookRepository.App.Domain;
+﻿using BookRepository.App.AppServices;
+using BookRepository.App.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,9 +41,10 @@ namespace BookRepository.App.Controllers
         [HttpGet()]
         public async Task<IActionResult> GetAll()
         {
-            var books = new List<Book>() { book1, book2 };
+            var response = await _mediator.Send( new GetAllBooks.Request());
+            
 
-            return Ok(books);
+            return Ok(response.Books);
         }
 
         [HttpGet("{property}")]
