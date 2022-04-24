@@ -44,12 +44,13 @@ Mainly used to kepp track of work progress without using an external program.
  - [X] Decide fine architecture details
  - [X] Set up test projects
  - [X] Implement domain model, ~~DTO as POCO~~(not needed, used built in attributes instead), and any related tests
- - [ ] Add api endpoints according to spec, and create failing acceptance tests for them
+ - [X] Add api endpoints according to spec, and create failing acceptance tests for them. **Update** Start with GET endpoints. Create/update will be done after read is fully complete
  - [ ] Add services, and connect them to API endpoints. Inject dummy interface implementations at this point
- - [ ] Test request validation, make sure that validation pipeline is working correctly.
+ - [ ] Test request validation, make sure that validation pipeline is working correctly. Still GET only
  - [ ] Add data migration at main app startup
- - [ ] Implement actual book repository
- - [ ] Make sure all acceptance tests pass
+ - [ ] Implement actual book repository for GET
+ - [ ] Make sure all acceptance tests pass for GET
+ - [ ] Repeat process for Create/Update
  - [ ] (Optional) Attempt to use mapping instead of POCO not following conventions. If there is not ennough time this step can be skipped.
  - [ ] More detailed review & cleanup. Finalize documentation
  - [ ] Try to break app, and apply validation/additional error handling as needed
