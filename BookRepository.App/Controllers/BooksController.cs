@@ -1,5 +1,4 @@
 ﻿using BookRepository.App.AppServices;
-using BookRepository.App.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,34 +15,10 @@ namespace BookRepository.App.Controllers
             _mediator = mediator;
         }
 
-        public readonly Book book1 = new Book
-        {
-            Id = "B1",
-            Author = "Kutner, Joe",
-            Title = "Deploying with JRuby",
-            Genre = "Computer",
-            Price = 33.00M,
-            Published = new DateTime(2012, 8, 15),
-            Description = "Deploying with JRuby is the missing link between enjoying JRuby and using it in the real world to build high-performance, scalable applications."
-        };
-
-        public readonly Book book2 = new Book
-        {
-            Id = "B2",
-            Author = "Ralls, Kim",
-            Title = "Midnight Rain",
-            Genre = "Fantasy",
-            Price = 5.95M,
-            Published = new DateTime(2000, 12, 16),
-            Description = "A former architect battles corporate zombies, an evil sorceress, and her own childhood to become queen of the world."
-        };
-
         [HttpGet()]
         public async Task<IActionResult> GetAll()
         {
             var response = await _mediator.Send( new GetAllBooks.Request());
-            
-
             return Ok(response.Books);
         }
 
@@ -51,7 +26,6 @@ namespace BookRepository.App.Controllers
         public async Task<IActionResult> GetSorted([FromRoute] GetBooksSorted.Request request)
         {
             var response = await _mediator.Send(request);
-
             return Ok(response.Books);
         }
 
@@ -69,34 +43,58 @@ namespace BookRepository.App.Controllers
         }
 
         [HttpGet("price/{Price:decimal}")]
-        public async Task<IActionResult> GetForSpecificPrice([FromRoute] PriceRequest request)
+        public async Task<IActionResult> GetForSpecificPrice([FromRoute] GetBooksWithExactPrice.Request request)
         {
-            return Ok($"Return books costing exactly {request.Price}");
+            var response = await _mediator.Send(request);
+
+            return Ok(response.Books);
         }
 
         [HttpGet("published/{Year:int}/{Month:int}/{Day:int}")]
-        public async Task<IActionResult> GetForPublishedDate([FromRoute] PublishedRangeRequest request)
+        public async Task<IActionResult> GetForPublishedDate([FromRoute] int year, [FromRoute] int month, [FromRoute] int day)
         {
-            return Ok($"Return books published {request.Year}-{request.Month}-{request.Day}");
+            var request = new GetBooksPublishedInInterval.Request
+            {
+                Year = year,
+                Month = month,
+                Day = day
+            };
+            var response = await _mediator.Send(request);
+
+            return Ok(response.Books);
         }
 
         [HttpGet("published/{year:int}/{month:int}")]
         public async Task<IActionResult> GetForPublishedMonth([FromRoute] int year, [FromRoute] int month)
         {
-            return Ok($"Return books published {year}-{month}");
+            var request = new GetBooksPublishedInInterval.Request
+            {
+                Year = year,
+                Month = month
+            };
+            var response = await _mediator.Send(request);
+
+            return Ok(response.Books);
         }
 
         [HttpGet("published/{year:int}")]
         public async Task<IActionResult> GetForPublishedYear([FromRoute] int year)
         {
-            return Ok($"Return books published {year}");
+            var request = new GetBooksPublishedInInterval.Request
+            {
+                Year = year
+            };
+            var response = await _mediator.Send(request);
+
+            return Ok(response.Books);
         }
 
-
         [HttpGet("price/{From:decimal}&{To:decimal}")]
-        public async Task<IActionResult> GetPriceRange([FromRoute] PriceRangeRequest request)
+        public async Task<IActionResult> GetBooksForPriceRange([FromRoute] GetBooksForPriceRange.Request request)
         {
-            return Ok($"Return books costing between {request.From} and {request.To}");
+            var response = await _mediator.Send(request);
+
+            return Ok(response.Books);
         }
 
         [HttpPut()]
@@ -125,29 +123,6 @@ namespace BookRepository.App.Controllers
         {
             public string Id { get; set;}
             public BookData BookData { get; set;}
-        }
-
-        public class PriceRangeRequest
-        {
-            public decimal From { get; set; }
-
-            public decimal To { get; set; }
-        }
-
-        public class PriceRequest
-        {
-            public decimal Price { get; set; }
-
-        }
-
-        public class PublishedRangeRequest
-        {
-            public int Year { get; set; }
-
-            public int? Month { get; set; }
-
-            public int? Day { get; set; }
-
         }
     }
 }

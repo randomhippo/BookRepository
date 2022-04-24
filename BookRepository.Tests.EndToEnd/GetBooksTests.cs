@@ -203,8 +203,7 @@ namespace BookRepository.Tests.EndToEnd
         [Fact]
         public async Task GetBooks_ForPublished_Year()
         {
-            var books = await _getBooksService.GetData("/api/books/genre/published/2012");
-
+            var books = await _getBooksService.GetData("/api/books/published/2012");
 
             books.Should()
                 .AllSatisfy(book =>
@@ -219,7 +218,7 @@ namespace BookRepository.Tests.EndToEnd
         [Fact]
         public async Task GetBooks_ForPublished_YearMonth()
         {
-            var books = await _getBooksService.GetData("/api/books/genre/published/2012/8");
+            var books = await _getBooksService.GetData("/api/books/published/2012/8");
 
 
             books.Should()
@@ -235,7 +234,7 @@ namespace BookRepository.Tests.EndToEnd
         [Fact]
         public async Task GetBooks_ForPublished_YearMonthDay()
         {
-            var books = await _getBooksService.GetData("/api/books/genre/published/2012/8/15");
+            var books = await _getBooksService.GetData("/api/books/published/2012/8/15");
 
 
             books.Should()
