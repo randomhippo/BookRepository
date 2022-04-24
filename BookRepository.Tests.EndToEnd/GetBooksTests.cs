@@ -43,7 +43,7 @@ namespace BookRepository.Tests.EndToEnd
 
             books.Should()
                 .HaveCount(13)
-                .And.AllSatisfy(book => book.Id.Should().ContainEquivalentOf("b"))
+                .And.AllSatisfy(book => book.PresentedId.Should().ContainEquivalentOf("b"))
                 .And.BeInAscendingOrder(b => b.Id);
         }
 
@@ -54,7 +54,7 @@ namespace BookRepository.Tests.EndToEnd
 
             books.Should()
                 .HaveCount(5)
-                .And.AllSatisfy(book => book.Id.Contains("b1",StringComparison.InvariantCultureIgnoreCase))
+                .And.AllSatisfy(book => book.PresentedId.Contains("b1",StringComparison.InvariantCultureIgnoreCase))
                 .And.BeInAscendingOrder(b => b.Id);
         }
 
@@ -280,7 +280,7 @@ namespace BookRepository.Tests.EndToEnd
 
 
             books.Should()
-                .ContainSingle(book => book.Id == "B1")
+                .ContainSingle(book => book.PresentedId == "B1")
                 .And.AllSatisfy(book =>
                 {
                     book.Description.Should().Contain("application");

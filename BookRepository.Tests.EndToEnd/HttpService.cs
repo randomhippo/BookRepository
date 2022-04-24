@@ -28,7 +28,6 @@ namespace BookRepository.Tests.EndToEnd
 
                 return JsonSerializer.Deserialize<T>(stringResult);
             }
-
         }
     }
 }

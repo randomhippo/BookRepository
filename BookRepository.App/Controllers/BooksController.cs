@@ -98,9 +98,11 @@ namespace BookRepository.App.Controllers
         }
 
         [HttpPut()]
-        public async Task<IActionResult> CreateBook([FromBody] BookData request)
+        public async Task<IActionResult> CreateBook([FromBody] CreateBook.Request request)
         {
-            return BadRequest("When done, a book will be created if the request body is valid.");
+            var response = await _mediator.Send(request);
+
+            return Ok();
         }
 
         [HttpPost("{id}")]

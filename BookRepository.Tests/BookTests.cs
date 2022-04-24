@@ -19,7 +19,7 @@ namespace BookRepository.Tests
                 Author = "A",
                 Description = "B",
                 Genre = "C",
-                Id = "I1",
+                PresentedId = "I1",
                 Price = 12.3M,
                 Published = new DateTime(2022, 1, 1),
                 Title = "T"
@@ -30,7 +30,7 @@ namespace BookRepository.Tests
                 Author = "A",
                 Description = "B",
                 Genre = "C",
-                Id = "I1",
+                PresentedId = "I1",
                 Price = 12.3M,
                 Published = new DateTime(2022, 1, 1),
                 Title = "T"
@@ -47,7 +47,7 @@ namespace BookRepository.Tests
                 Author = "Aaaaaaaa",
                 Description = "B",
                 Genre = "C",
-                Id = "I1",
+                PresentedId = "I1",
                 Price = 12.3M,
                 Published = new DateTime(2022, 1, 1),
                 Title = "T"
@@ -58,7 +58,7 @@ namespace BookRepository.Tests
                 Author = "A",
                 Description = "B",
                 Genre = "C",
-                Id = "I1",
+                PresentedId = "I1",
                 Price = 12.3M,
                 Published = new DateTime(2022, 1, 1),
                 Title = "T"

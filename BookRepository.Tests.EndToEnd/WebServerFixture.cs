@@ -8,10 +8,11 @@ namespace BookRepository.Tests.EndToEnd
     {
         WebApplicationFactory<Program> _application;
 
+
         public WebServerFixture()
         {
             _application = new WebApplicationFactory<Program>()
-                                .WithWebHostBuilder(builder => { });
+                                .WithWebHostBuilder(builder => { builder.UseSetting("databaseName", DatabaseName); });
 
             Client = _application.CreateClient();
 
@@ -19,10 +20,14 @@ namespace BookRepository.Tests.EndToEnd
 
         public HttpClient Client { get; private set; }
 
+        public virtual string DatabaseName { get; private set; } = "TestBooks.db";
+
         public void Dispose()
         {
             _application.Dispose();
             Client.Dispose();
         }
     }
+
+
 }

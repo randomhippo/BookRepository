@@ -24,7 +24,7 @@ namespace BookRepository.Tests
 
 			var expected = new Book
 			{
-				Id = "B1",
+				PresentedId = "B1",
 				Author = "Kutner, Joe",
 				Title = "Deploying with JRuby",
 				Genre = "Computer",
@@ -52,7 +52,7 @@ namespace BookRepository.Tests
 
 			var book = new Book
 			{
-				Id = "B1",
+				PresentedId = "B1",
 				Author = "Kutner, Joe",
 				Title = "Deploying with JRuby",
 				Genre = "Computer",

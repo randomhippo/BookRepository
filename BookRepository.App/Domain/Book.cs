@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace BookRepository.App.Domain
@@ -7,8 +8,17 @@ namespace BookRepository.App.Domain
     {
         [JsonPropertyName("id")]
         [JsonPropertyOrder(0)]
+        [NotMapped]
+        public string PresentedId
+        {
+            get;set;
+        }
+
+
         [Key]
-        public string Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [JsonIgnore]
+        public int Id { get; set; }
 
         [JsonPropertyName("author")]
         [JsonPropertyOrder(1)]
@@ -19,7 +29,7 @@ namespace BookRepository.App.Domain
         [JsonPropertyOrder(2)]
         [Required]
         public string Title { get; set; }
-        
+
         [JsonPropertyName("genre")]
         [JsonPropertyOrder(3)]
         [Required]
@@ -35,7 +45,7 @@ namespace BookRepository.App.Domain
         [JsonPropertyOrder(5)]
         [Required]
         public DateTime Published { get; set; }
-        
+
         [JsonPropertyName("description")]
         [JsonPropertyOrder(6)]
         [Required]
@@ -52,7 +62,7 @@ namespace BookRepository.App.Domain
 
         public bool Equals(Book? other)
         {
-            if(other == null) return false;
+            if (other == null) return false;
 
             if (ReferenceEquals(other, this)) return true;
 

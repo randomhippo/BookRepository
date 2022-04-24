@@ -43,7 +43,7 @@ namespace BookRepository.App.AppServices
                 IQueryable<Book> queryable = property.ToLower() switch
                 {
                     //Since string.Contains will always be compared in a case sensitive way for current version of EF core, the use of EF.Functions is required instead
-                    "id" => context.Books.Where(b => EF.Functions.Like(b.Id, $"%{value}%")).OrderBy(b => b.Id),
+                    "id" => context.Books.Where(b => EF.Functions.Like(b.PresentedId, $"%{value}%")).OrderBy(b => b.PresentedId),
                     "author" => context.Books.Where(b => EF.Functions.Like(b.Author, $"%{value}%")).OrderBy(b => b.Author),
                     "description" => context.Books.Where(b => EF.Functions.Like(b.Description, $"%{value}%")).OrderBy(b => b.Description),
                     "genre" => context.Books.Where(b => EF.Functions.Like(b.Genre, $"%{value}%")).OrderBy(b => b.Genre),

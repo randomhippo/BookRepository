@@ -11,6 +11,7 @@ builder.Services.AddControllers()
 {
     options.JsonSerializerOptions.WriteIndented = true;
     options.JsonSerializerOptions.Converters.Add(new CustomDateTimeConverter("yyyy-MM-dd"));
+    options.JsonSerializerOptions.Converters.Add(new DecimalFormatConverter("N2"));
 });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

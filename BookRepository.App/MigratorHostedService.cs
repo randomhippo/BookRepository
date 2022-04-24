@@ -29,7 +29,7 @@ namespace BookRepository.App
                 await booksContext.Database.EnsureCreatedAsync(cancellationToken);
 
                 var assignmentDataPath = Path.Combine(Environment.CurrentDirectory, "AssignmentData.json");
-                var initialDataString = await File.ReadAllTextAsync(assignmentDataPath);
+                var initialDataString = await File.ReadAllTextAsync(assignmentDataPath, cancellationToken);
                 using (var stream = File.OpenRead(assignmentDataPath))
                 {
                     var initialEntities = await JsonSerializer.DeserializeAsync<IEnumerable<Book>>(stream, cancellationToken: cancellationToken);
@@ -42,9 +42,6 @@ namespace BookRepository.App
             }
         }
 
-
-
-        // noop
         public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
     }
 
