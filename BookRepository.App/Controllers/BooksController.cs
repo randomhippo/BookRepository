@@ -47,24 +47,12 @@ namespace BookRepository.App.Controllers
             return Ok(response.Books);
         }
 
-        [HttpGet("{property}")]
-        public async Task<IActionResult> GetSorted([FromRoute] string property)
+        [HttpGet("{SortProperty}")]
+        public async Task<IActionResult> GetSorted([FromRoute] GetBooksSorted.Request request)
         {
-            var books = new List<Book>() { book1, book2 };
-            switch (property.ToLower())
-            {
-                case "id":
-                    return Ok(books.OrderBy(b => b.Id));
-                case "author":
-                    return Ok(books.OrderBy(b => b.Author));
-                case "genre":
-                    return Ok(books.OrderBy(b => b.Genre));
-                case "price":
-                    return Ok(books.OrderBy(b => b.Price));
-                default:
-                    return BadRequest("Invalid sort option or property not supported in POC code.");
+            var response = await _mediator.Send(request);
 
-            }
+            return Ok(response.Books);
         }
 
         [HttpGet("{property}/{value}")]

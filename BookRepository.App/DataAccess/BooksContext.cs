@@ -15,7 +15,17 @@ namespace BookRepository.App.DataAccess
             _databasePath = Path.Join(userAppFolder, "books.db");
         }
 
-        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Book>(
+                builder =>
+                {
+                    //Specify type as double since SqlLite does not support decimal
+                    //See https://docs.microsoft.com/en-us/ef/core/providers/sqlite/limitations#query-limitations
+                    builder.Property(b => b.Price).HasConversion<double>();
+                    builder.Property(b => b.Published).HasColumnType("datetime");
+                });
+        }
 
         // The following configures EF to create a Sqlite database file in the
         // special "local" folder for your platform.

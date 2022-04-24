@@ -161,6 +161,16 @@ namespace BookRepository.Tests.EndToEnd
         }
 
         [Fact]
+        public async Task GetBooks_SortedByPrice()
+        {
+            var books = await _getBooksService.GetData("/api/books/price");
+
+            books.Should()
+                .HaveCount(13)
+                .And.BeInAscendingOrder(b => b.Price);
+        }
+
+        [Fact]
         public async Task GetBooks_ForPrice_Exact()
         {
             var books = await _getBooksService.GetData("/api/books/price/33.0");
@@ -185,7 +195,7 @@ namespace BookRepository.Tests.EndToEnd
         [Fact]
         public async Task GetBooks_SortedByPublished()
         {
-            var books = await _getBooksService.GetData("/api/books/genre/published");
+            var books = await _getBooksService.GetData("/api/books/published");
 
             books.Should()
                 .HaveCount(13)

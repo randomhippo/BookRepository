@@ -9,12 +9,11 @@ namespace BookRepository.App.AppServices
     {
         public class Request : BaseRequest<Response>
         {
-
         }
 
         public class Response : BaseResponse
         {
-            public IEnumerable<Book> Books { get; set; }
+            public IEnumerable<Book> Books { get; set; } = Enumerable.Empty<Book>();
         }
 
         public class Handler : IRequestHandler<Request, Response>
@@ -32,7 +31,6 @@ namespace BookRepository.App.AppServices
                 {
                     Books = await _context.Books.ToListAsync(cancellationToken)
                 };
-
             }
         }
     }
