@@ -163,13 +163,14 @@ namespace BookRepository.App.Controllers
         {
             var response = await _mediator.Send(request);
 
-            return Ok();
+            //Find a way get the url without hardcoding and/or breaking separation of concerns.
+            return Created($"/api/books/id/{response.Content.PresentedId}", response.Content);
         }
 
         /// <summary>
         /// Updates the specified book
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">Id of entity to update.</param>
         /// <param name="bookdata"></param>
         /// <returns></returns>
         [HttpPost("{id}")]
@@ -182,16 +183,10 @@ namespace BookRepository.App.Controllers
             };
 
             var response = await _mediator.Send(request);
-            return StatusCode((int)response.Result);
+            
+
+            return StatusCode((int)response.Result, response.Content);
             
         }
-
-        
-
-        //public class UpdateBookRequest
-        //{
-        //    public string Id { get; set; }
-        //    public BookData BookData { get; set; }
-        //}
     }
 }

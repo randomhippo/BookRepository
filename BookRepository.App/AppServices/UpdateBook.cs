@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using BookRepository.App.DataAccess;
+using BookRepository.App.Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -40,6 +41,7 @@ namespace BookRepository.App.AppServices
 
         public class Response : BaseResponse
         {
+            public Book Content { get; set; }
         }
 
         public class Handler : IRequestHandler<Request, Response>
@@ -75,7 +77,7 @@ namespace BookRepository.App.AppServices
                 _context.Books.Update(bookToModify);
                 await _context.SaveChangesAsync();
 
-                return new Response();
+                return new Response { Content = bookToModify };
             }
         }
     }
