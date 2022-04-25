@@ -54,7 +54,7 @@ namespace BookRepository.Tests.EndToEnd
 
             books.Should()
                 .HaveCount(5)
-                .And.AllSatisfy(book => book.PresentedId.Contains("b1",StringComparison.InvariantCultureIgnoreCase))
+                .And.AllSatisfy(book => book.PresentedId.Contains("b1", StringComparison.InvariantCultureIgnoreCase))
                 .And.BeInAscendingOrder(b => b.Id);
         }
 
@@ -183,9 +183,10 @@ namespace BookRepository.Tests.EndToEnd
             var books = await _getBooksService.GetData("/api/books/price/30.0&35.0");
             var p = new Book().Price >= 30.0M;
             books.Should()
-                .AllSatisfy(book =>
+                .HaveCount(2)
+                .And.AllSatisfy(book =>
                 {
-                    book.Price.Should().BeInRange(30.0M, 40.0M);
+                    book.Price.Should().BeInRange(30.0M, 35.0M);
                 })
                 .And.BeInAscendingOrder(book => book.Price);
         }
@@ -206,7 +207,8 @@ namespace BookRepository.Tests.EndToEnd
             var books = await _getBooksService.GetData("/api/books/published/2012");
 
             books.Should()
-                .AllSatisfy(book =>
+                .HaveCount(2)
+                .And.AllSatisfy(book =>
                 {
                     book.Published.Should()
                         .BeOnOrAfter(new DateTime(2012, 1, 1))
@@ -222,7 +224,8 @@ namespace BookRepository.Tests.EndToEnd
 
 
             books.Should()
-                .AllSatisfy(book =>
+                .ContainSingle()
+                .And.AllSatisfy(book =>
                 {
                     book.Published.Should()
                         .BeOnOrAfter(new DateTime(2012, 8, 1))
@@ -238,7 +241,8 @@ namespace BookRepository.Tests.EndToEnd
 
 
             books.Should()
-                .AllSatisfy(book =>
+                .ContainSingle()
+                .And.AllSatisfy(book =>
                 {
                     book.Published.Should()
                         .BeOnOrAfter(new DateTime(2012, 8, 15))

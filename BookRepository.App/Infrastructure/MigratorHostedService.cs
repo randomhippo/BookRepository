@@ -2,7 +2,7 @@
 using BookRepository.App.DataAccess;
 using BookRepository.App.Domain;
 
-namespace BookRepository.App
+namespace BookRepository.App.Infrastructure
 {
     /// <summary>
     /// Class used to set up initial data
@@ -25,6 +25,7 @@ namespace BookRepository.App
                 var booksContext = scope.ServiceProvider.GetRequiredService<BooksContext>();
 
                 //Do the migration asynchronously
+                
                 await booksContext.Database.EnsureDeletedAsync(cancellationToken);
                 await booksContext.Database.EnsureCreatedAsync(cancellationToken);
 
@@ -32,7 +33,7 @@ namespace BookRepository.App
                 var initialDataString = await File.ReadAllTextAsync(assignmentDataPath, cancellationToken);
                 using (var stream = File.OpenRead(assignmentDataPath))
                 {
-                    var initialEntities = await JsonSerializer.DeserializeAsync<IEnumerable<Book>>(stream, cancellationToken: cancellationToken);
+                    var initialEntities = await JsonSerializer.DeserializeAsync<IEnumerable<Book>>(stream, cancellationToken: cancellationToken) ?? Array.Empty<Book>();
 
                     await booksContext.AddRangeAsync(initialEntities, cancellationToken);
                     await booksContext.SaveChangesAsync(cancellationToken: cancellationToken);

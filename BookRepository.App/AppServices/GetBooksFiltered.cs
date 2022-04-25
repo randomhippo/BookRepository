@@ -1,5 +1,6 @@
 ﻿using BookRepository.App.DataAccess;
 using BookRepository.App.Domain;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,14 +10,22 @@ namespace BookRepository.App.AppServices
     {
         public class Request : BaseRequest<Response>
         {
-            public string FilterProperty { get; set; } = String.Empty;
+            public string FilterProperty { get; set; } = null!;
 
-            public string FilterValue { get; set; }
+            public string FilterValue { get; set; } = null!;
         }
 
         public class Response : BaseResponse
         {
             public IEnumerable<Book> Books { get; set; } = Enumerable.Empty<Book>();
+        }
+
+        public class Validator : AbstractValidator<Request>
+        {
+            public Validator()
+            {
+                RuleFor(request => request.FilterProperty).IsEnumName(typeof(SupportedStringFilterProperties), caseSensitive: false);
+            }
         }
 
         public class Handler : IRequestHandler<Request, Response>

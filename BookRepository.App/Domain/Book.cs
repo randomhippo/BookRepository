@@ -9,11 +9,7 @@ namespace BookRepository.App.Domain
         [JsonPropertyName("id")]
         [JsonPropertyOrder(0)]
         [NotMapped]
-        public string PresentedId
-        {
-            get;set;
-        }
-
+        public string PresentedId { get; set; } = null!;
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -23,17 +19,17 @@ namespace BookRepository.App.Domain
         [JsonPropertyName("author")]
         [JsonPropertyOrder(1)]
         [Required]
-        public string Author { get; set; }
+        public string Author { get; set; } = null!;
 
         [JsonPropertyName("title")]
         [JsonPropertyOrder(2)]
         [Required]
-        public string Title { get; set; }
+        public string Title { get; set; } = null!;
 
         [JsonPropertyName("genre")]
         [JsonPropertyOrder(3)]
         [Required]
-        public string Genre { get; set; }
+        public string Genre { get; set; } = null!;
 
         [JsonPropertyName("price")]
         [JsonPropertyOrder(4)]
@@ -49,7 +45,7 @@ namespace BookRepository.App.Domain
         [JsonPropertyName("description")]
         [JsonPropertyOrder(6)]
         [Required]
-        public string Description { get; set; }
+        public string Description { get; set; } = null!;
 
         public override bool Equals(object? obj)
         {

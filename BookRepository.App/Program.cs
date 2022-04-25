@@ -1,7 +1,8 @@
 using System.Reflection;
-using BookRepository.App;
 using BookRepository.App.Converters;
 using BookRepository.App.DataAccess;
+using BookRepository.App.Infrastructure;
+using FluentValidation;
 using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,11 +26,16 @@ builder.Services.AddSwaggerGen(c =>
 //Set up Mediator
 builder.Services.AddMediatR(typeof(Program));
 
-builder.Services.AddDbContext<BooksContext>();
 
+builder.Services.AddValidatorsFromAssemblyContaining(typeof(Program));
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+builder.Services.AddTransient<ExceptionHandlingMiddleware>();
+
+builder.Services.AddDbContext<BooksContext>();
 builder.Services.AddHostedService<MigratorHostedService>();
 
 var app = builder.Build();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

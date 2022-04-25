@@ -1,8 +1,11 @@
 ﻿using System.ComponentModel;
+using System.Globalization;
+using System.Text.Json.Serialization;
 using BookRepository.App.DataAccess;
 using BookRepository.App.Domain;
+using BookRepository.App.Exceptions;
+using FluentValidation;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace BookRepository.App.AppServices
 {
@@ -10,9 +13,9 @@ namespace BookRepository.App.AppServices
     {
         public class Request : BaseRequest<Response>
         {
-            public string Id { get; set; }
+            public string Id { get; set; } = null!;
 
-            public BookData UpdatedContent { get; set; }
+            public BookData UpdatedContent { get; set; } = null!;
 
         }
 
@@ -22,26 +25,50 @@ namespace BookRepository.App.AppServices
             /// The author
             /// </summary>
             [DefaultValue("Someone")]
-            public string Author { get; set; }
+            public string Author { get; set; } = null!;
             /// <summary>
             /// A description of the book.
             /// </summary>
             [DefaultValue("A description")]
-            public string Description { get; set; }
+            public string Description { get; set; } = null!;
             [DefaultValue("Fiction")]
-            public string Genre { get; set; }
+            public string Genre { get; set; } = null!;
 
             [DefaultValue("12.34")]
-            public string Price { get; set; }
+            public string Price { get; set; } = null!;
+            
             [DefaultValue("2011-11-11")]
+            [JsonPropertyName("publish_date")]
             public DateTime Published { get; set; }
+            
             [DefaultValue("Title here")]
-            public string Title { get; set; }
+            public string Title { get; set; } = null!;
         }
 
-        public class Response : BaseResponse
+        public class Response : SingleBookResponse
         {
-            public Book Content { get; set; }
+            public Response(Book updated) : base(updated)
+            {
+            }
+        }
+
+        public class Validator : AbstractValidator<Request>
+        {
+            public Validator()
+            {
+                RuleFor(c => c.Id).NotEmpty();
+                RuleFor(c => c.UpdatedContent).NotEmpty();
+                When(c => c.UpdatedContent != null, () =>
+                {
+                    RuleFor(c => c.UpdatedContent.Author).NotEmpty();
+                    RuleFor(c => c.UpdatedContent.Description).NotEmpty();
+                    RuleFor(c => c.UpdatedContent.Genre).NotEmpty();
+                    RuleFor(c => c.UpdatedContent.Title).NotEmpty();
+                    RuleFor(c => c.UpdatedContent.Price).Must(x => decimal.TryParse(x, NumberStyles.Number, provider: CultureInfo.InvariantCulture, out var val) && val > 0)
+                    .WithMessage("Price must be more than 0");
+                    RuleFor(c => c.UpdatedContent.Published).NotEmpty();
+                });
+            }
         }
 
         public class Handler : IRequestHandler<Request, Response>
@@ -59,13 +86,10 @@ namespace BookRepository.App.AppServices
 
                 if (bookToModify == null)
                 {
-                    return new Response()
-                    {
-                        Result = System.Net.HttpStatusCode.NotFound
-                    };
+                    throw new NotFoundException("The specified book was not found");
                 }
 
-                decimal.TryParse(request.UpdatedContent.Price, out var price);
+                decimal.TryParse(request.UpdatedContent.Price, NumberStyles.Number, provider: CultureInfo.InvariantCulture, out var price);
 
                 bookToModify.Title = request.UpdatedContent.Title;
                 bookToModify.Description = request.UpdatedContent.Description;
@@ -75,9 +99,9 @@ namespace BookRepository.App.AppServices
                 bookToModify.Published = request.UpdatedContent.Published;
 
                 _context.Books.Update(bookToModify);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(cancellationToken);
 
-                return new Response { Content = bookToModify };
+                return new Response(bookToModify);
             }
         }
     }

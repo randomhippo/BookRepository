@@ -1,4 +1,5 @@
-﻿using BookRepository.App.AppServices;
+﻿using System.Globalization;
+using BookRepository.App.AppServices;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,7 +27,7 @@ namespace BookRepository.App.Controllers
         /// <summary>
         /// Gets all books currently stored in the database
         /// </summary>
-        /// <returns>All books not sorted on anything</returns>
+        /// <returns>All books not sorted in any way</returns>
         [HttpGet()]
         public async Task<IActionResult> GetAll()
         {
@@ -75,10 +76,15 @@ namespace BookRepository.App.Controllers
         /// </summary>
         /// <param name="price">The amount. Use . as decimal separator</param>
         /// <returns></returns>
-        [HttpGet("price/{Price:decimal}")]
-        public async Task<IActionResult> GetForSpecificPrice([FromRoute] GetBooksWithExactPrice.Request price)
+        [HttpGet("price/{price:decimal}")]
+        public async Task<IActionResult> GetForSpecificPrice([FromRoute] decimal price)
         {
-            var response = await _mediator.Send(price);
+            var request = new GetBooksWithExactPrice.Request()
+            {
+                Price = price
+            };
+
+            var response = await _mediator.Send(request);
 
             return Ok(response.Books);
         }
@@ -86,11 +92,11 @@ namespace BookRepository.App.Controllers
         /// <summary>
         /// Gets books published on the specific calendar day
         /// </summary>
-        /// <param name="year">The publish year</param>
-        /// <param name="month">The publish month</param>
+        /// <param name="year">The publish year (1-9999)</param>
+        /// <param name="month">The publish month (1-12)</param>
         /// <param name="day">The publish day</param>
         /// <returns></returns>
-        [HttpGet("published/{Year:int}/{Month:int}/{Day:int}")]
+        [HttpGet("published/{year:int}/{month:int}/{day:int}")]
         public async Task<IActionResult> GetForPublishedDate([FromRoute] int year, [FromRoute] int month, [FromRoute] int day)
         {
             var request = new GetBooksPublishedInInterval.Request
@@ -107,8 +113,8 @@ namespace BookRepository.App.Controllers
         /// <summary>
         /// Gets books published in the specific month
         /// </summary>
-        /// <param name="year">The publish year</param>
-        /// <param name="month">The publish month</param>
+        /// <param name="year">The publish year (1-9999)</param>
+        /// <param name="month">The publish month (1-12)</param>
         /// <returns></returns>
         [HttpGet("published/{year:int}/{month:int}")]
         public async Task<IActionResult> GetForPublishedMonth([FromRoute] int year, [FromRoute] int month)
@@ -126,7 +132,7 @@ namespace BookRepository.App.Controllers
         /// <summary>
         /// Gets books published in the specified year
         /// </summary>
-        /// <param name="year">The publish year</param>
+        /// <param name="year">The publish year (1-9999)</param>
         /// <returns></returns>
         [HttpGet("published/{year:int}")]
         public async Task<IActionResult> GetForPublishedYear([FromRoute] int year)
@@ -161,6 +167,8 @@ namespace BookRepository.App.Controllers
         [HttpPut()]
         public async Task<IActionResult> CreateBook([FromBody] CreateBook.Request request)
         {
+
+            //bool v = decimal.TryParse(request.Price, NumberStyles.Number, provider: CultureInfo.InvariantCulture, out var val) && val > 0;
             var response = await _mediator.Send(request);
 
             //Find a way get the url without hardcoding and/or breaking separation of concerns.
@@ -183,10 +191,8 @@ namespace BookRepository.App.Controllers
             };
 
             var response = await _mediator.Send(request);
-            
 
-            return StatusCode((int)response.Result, response.Content);
-            
+            return Ok(response.Content);
         }
     }
 }

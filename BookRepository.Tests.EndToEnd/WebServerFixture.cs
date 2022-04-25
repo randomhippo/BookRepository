@@ -11,6 +11,7 @@ namespace BookRepository.Tests.EndToEnd
 
         public WebServerFixture()
         {
+            //TODO: Use startup argument to override database name.
             _application = new WebApplicationFactory<Program>()
                                 .WithWebHostBuilder(builder => { builder.UseSetting("databaseName", DatabaseName); });
 

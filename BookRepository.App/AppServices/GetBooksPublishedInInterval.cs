@@ -1,5 +1,6 @@
 ﻿using BookRepository.App.DataAccess;
 using BookRepository.App.Domain;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,6 +34,28 @@ namespace BookRepository.App.AppServices
                         return From.AddMonths(1).Subtract(TimeSpan.FromTicks(1));
                     return From.AddYears(1).Subtract(TimeSpan.FromTicks(1));
                 }
+            }
+        }
+
+        public class Validator : AbstractValidator<Request>
+        {
+            public Validator()
+            {
+                
+                RuleFor(request => request.Year).InclusiveBetween(1, 9999);
+                RuleFor(request => request.Month).InclusiveBetween(1, 12).When(request => request.Month.HasValue);
+                
+                When(request => request.Day.HasValue, () =>
+                {
+                    RuleFor(request => request.Month).NotNull();
+                    RuleFor(request => request.Day)
+                        .Must((request, day) => day >= 1 && day <= DateTime.DaysInMonth(request.Year, request.Month.Value))
+                        .When(request => request.Year >= 1 && request.Year <= 9999 && request.Month >= 1 && request.Month <= 12)
+                        .WithMessage("Day must be between 1 and the numbers of day in that month/year");
+                });
+
+                
+
             }
         }
 

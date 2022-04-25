@@ -11,6 +11,8 @@ namespace BookRepository.App.DataAccess
 
         public BooksContext() :base()
         {
+            //TODO: It can be considered ok for demo, but database path should not be hardcoded in a real app
+            //This is required to have separate SQLLite databases for integration testing and app. App should not reset database.
             var userAppFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             _databasePath = Path.Join(userAppFolder, "books.db");
         }

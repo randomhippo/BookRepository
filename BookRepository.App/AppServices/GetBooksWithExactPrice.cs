@@ -1,5 +1,6 @@
 ﻿using BookRepository.App.DataAccess;
 using BookRepository.App.Domain;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,14 @@ namespace BookRepository.App.AppServices
         public class Response : BaseResponse
         {
             public IEnumerable<Book> Books { get; set; } = Enumerable.Empty<Book>();
+        }
+
+        public class Validator : AbstractValidator<Request>
+        {
+            public Validator()
+            {
+                RuleFor(request => request.Price).NotEmpty();
+            }
         }
 
         public class Handler : IRequestHandler<Request, Response>

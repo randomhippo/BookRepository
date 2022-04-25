@@ -1,5 +1,6 @@
 ﻿using BookRepository.App.DataAccess;
 using BookRepository.App.Domain;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +26,14 @@ namespace BookRepository.App.AppServices
             public IEnumerable<Book> Books { get; set; } = Enumerable.Empty<Book>();
         }
 
+        public class Validator : AbstractValidator<Request>
+        {
+            public Validator()
+            {
+                RuleFor(request => request.From).Must((request, from) => request.To >= from ).WithMessage("Upper range must be greater than lower range.");
+            }
+        }
+
         public class Handler : IRequestHandler<Request, Response>
         {
             private BooksContext _context;
@@ -39,7 +48,7 @@ namespace BookRepository.App.AppServices
                 var response = new Response
                 {
                     Books = await _context.Books
-                    .Where(book => book.Price >= request.From && book.Price >= request.To)
+                    .Where(book => book.Price >= request.From && book.Price <= request.To)
                     .OrderBy(book => book.Price)
                     .ToListAsync(cancellationToken)
                 };
