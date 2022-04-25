@@ -1,5 +1,7 @@
-﻿using BookRepository.App.DataAccess;
+﻿using System.ComponentModel;
+using BookRepository.App.DataAccess;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookRepository.App.AppServices
 {
@@ -15,11 +17,24 @@ namespace BookRepository.App.AppServices
 
         public class BookData
         {
+            /// <summary>
+            /// The author
+            /// </summary>
+            [DefaultValue("Someone")]
             public string Author { get; set; }
+            /// <summary>
+            /// A description of the book.
+            /// </summary>
+            [DefaultValue("A description")]
             public string Description { get; set; }
+            [DefaultValue("Fiction")]
             public string Genre { get; set; }
-            public decimal Price { get; set; }
+
+            [DefaultValue("12.34")]
+            public string Price { get; set; }
+            [DefaultValue("2011-11-11")]
             public DateTime Published { get; set; }
+            [DefaultValue("Title here")]
             public string Title { get; set; }
         }
 
@@ -38,7 +53,7 @@ namespace BookRepository.App.AppServices
 
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var bookToModify = _context.Books.FirstOrDefault(b => b.PresentedId == request.Id);
+                var bookToModify = _context.Books.FirstOrDefault(b => b.PresentedId == request.Id.ToUpper());
 
                 if (bookToModify == null)
                 {
@@ -47,12 +62,14 @@ namespace BookRepository.App.AppServices
                         Result = System.Net.HttpStatusCode.NotFound
                     };
                 }
-                    
+
+                decimal.TryParse(request.UpdatedContent.Price, out var price);
+
                 bookToModify.Title = request.UpdatedContent.Title;
                 bookToModify.Description = request.UpdatedContent.Description;
                 bookToModify.Author = request.UpdatedContent.Author;
                 bookToModify.Genre = request.UpdatedContent.Genre;
-                bookToModify.Price = request.UpdatedContent.Price;
+                bookToModify.Price = price;
                 bookToModify.Published = request.UpdatedContent.Published;
 
                 _context.Books.Update(bookToModify);

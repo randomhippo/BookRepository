@@ -9,8 +9,14 @@ namespace BookRepository.App.AppServices
     {
         public class Request : BaseRequest<Response>
         {
+            /// <summary>
+            /// The lower end of the price range. Should be less than or equal to the upper end.
+            /// </summary>
             public decimal From { get; set; }
 
+            /// <summary>
+            /// The upper end of the price range. Should be greater than or equal to the lower end.
+            /// </summary>
             public decimal To { get; set; }
         }
 

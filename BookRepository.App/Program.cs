@@ -1,3 +1,4 @@
+using System.Reflection;
 using BookRepository.App;
 using BookRepository.App.Converters;
 using BookRepository.App.DataAccess;
@@ -16,7 +17,10 @@ builder.Services.AddControllers()
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
+});
 
 //Set up Mediator
 builder.Services.AddMediatR(typeof(Program));
